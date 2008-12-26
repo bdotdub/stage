@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'sinatra'
+require 'sinatra/lib/sinatra.rb'
 
 require 'stage/helpers'
 require 'stage/handlers'

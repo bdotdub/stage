@@ -1,7 +1,5 @@
-ENV['GEM_PATH'] = '/home/benny/.gems'
-
+require 'sinatra/lib/sinatra.rb'
 require 'rubygems'
-require 'sinatra'
  
 Sinatra::Application.default_options.merge!(
   :run => false,
