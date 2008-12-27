@@ -2,7 +2,10 @@
 %html{ :xmlns => "http://www.w3.org/1999/xhtml", :lang => "en", 'xml:lang' => "en" }
   %head
     %title
-      bwong.net
+      bwong
+      - if @page
+        \:
+        = @page
     %meta{ 'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8' }
     %link{ :rel => 'SHORTCUT ICON', :href => '/favicon.ico' }
    
