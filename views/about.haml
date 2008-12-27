@@ -2,5 +2,19 @@
   %h3.label about
   .relevant
     %p I never know what to write here, but I'll give it a shot. The way you describe yourself says a lot about how you see yourself.
-    %p That said, I am a son and a little brother born and raised in New York City. I went to this small university called Columbia, where I watched every single episode of Scrubs at least 6 times, once stayed up for 60 hours (save a 2 hour nap), and discovered the beauty of Car Bombs (and got many others hooked!). It's also where I met and fell in love with a girl.
+    %p
+      That said, I am a son and a little brother born and raised in New York City. I went a university called 
+      %a{ :href => 'http:/www.columbia.edu/' } Columbia
+      , where I watched every single episode of
+      %a{ :href => 'http://en.wikipedia.org/wiki/Scrubs_(TV_series)' } Scrubs
+      at least 6 times, once stayed up for 60 hours (save a 2 hour nap), and discovered the beauty of
+      %a{ :href => 'http://en.wikipedia.org/wiki/Carbomb_(beer_cocktail)' } Car Bombs
+      (and got many others hooked!). It's also where I met and fell in love with a 
+      %a{ :href => 'http://photos-f.ll.facebook.com/photos-ll-snc1/v368/132/67/1387860109/n1387860109_30163837_5348.jpg' } girl.
+      
     %p I am a self-proclaimed nerd, and now I have a job that pays me for being one. I am currently working as a programmer at a financial institution in Midtown NYC. I support the traders who are partially responsible for this whole credit crunch. Whoops.
+
+.module
+  %h3.label gpg key
+  .relevant
+    %pre= @gpg_key
