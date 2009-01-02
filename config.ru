@@ -8,8 +8,8 @@ Sinatra::Application.default_options.merge!(
   :views => File.dirname(__FILE__) + '/views'
 )
 
-log = File.new('logs/sinatra.out', 'a')
-error_log = File.new('logs/sinatra.err', 'a')
+log = File.new('logs/stage.out', 'a')
+error_log = File.new('logs/stage.err', 'a')
 
 STDOUT.reopen(log)
 STDERR.reopen(error_log)

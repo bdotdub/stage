@@ -1,0 +1,3 @@
+[submodule "public/apps/mushroom"]
+	path = public/apps/mushroom
+	url = git://github.com/bdotdub/mushroom.git
