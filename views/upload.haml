@@ -4,3 +4,11 @@
   %label{ :for => 'file' } Select a file:
   %input{ :type => 'file', :name => 'upload', :id => 'upload' }
   %input{ :type => 'submit', :name => 'submit', :value => 'Upload!' }
+
+.divider
+
+%ul
+  - @directories.each do |dir|
+    %li.directory= "#{dir}/"
+  - @files.each do |file|
+    %li.file= file

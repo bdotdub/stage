@@ -63,6 +63,7 @@ end
 # Upload stuff
 #
 get '/upload' do
+  @files, @directories = Dir.files_and_directories 'public/files/upload'
   haml :upload
 end
 
@@ -98,6 +99,13 @@ post '/upload' do
   @notice = File.basename filename
   @notice << " uploaded!"
 
+  @files, @directories = Dir.files_and_directories 'public/files/upload'
+
+  haml :upload
+end
+
+get '/upload/*' do
+  @notice = params['splat']
   haml :upload
 end
 
@@ -112,12 +120,7 @@ end
 
 get '/music/albums' do
   directory = 'public/files/music/cds'
-  @cds = Dir.entries(directory)
-  
-  # Filter out all the non-CDs
-  @cds.reject! do |entry|
-    (entry =~ /^\./ or not File.directory? "#{directory}/#{entry}")
-  end
+  @cds = Dir.directories(directory)
 
   haml :albums
 end
