@@ -7,8 +7,17 @@
 
 .divider
 
-%ul
-  - @directories.each do |dir|
-    %li.directory= "#{dir}/"
-  - @files.each do |file|
-    %li.file= file
+- if @directories or @files
+  %ul#file_list
+    - @directories.each do |dir|
+      %li.directory
+        %a{ :href => "/upload/#{dir}" }= "#{dir}/"
+    - @files.each do |file|
+      %li.file
+        %a{ :href => "/upload/#{file}" }= file
+
+- if @contents
+  %h2= @filename
+  .divider
+  %code= @contents
+

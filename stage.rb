@@ -105,7 +105,26 @@ post '/upload' do
 end
 
 get '/upload/*' do
-  @notice = params['splat']
+  upload_directory = 'public/files/upload'
+  path = params['splat']
+
+  full_path = "#{upload_directory}/#{path}"
+  @contents = @filename = nil
+
+  # Check if file exists
+  if File.exists? full_path
+    # If this is a directory, we must do a listing here
+    if File.directory? full_path
+
+    # Else, we just display the file
+    else
+      @filename = File.basename full_path
+      @contents = File.readlines(full_path).map {|l| l.rstrip}
+    end
+  else
+    raise Sinatra::NotFound
+  end
+  
   haml :upload
 end
 

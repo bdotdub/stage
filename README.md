@@ -1,6 +1,6 @@
 # Stage
 
-Stage is the code that is used to generate [stage.bwong.net](http://stage.bwong.net), and will soon be the new [http://bwong.net/](bwong.net). It is fully [Ruby](http://www.ruby-lang.org/en/)-fied, more specifically:
+Stage is the code that is used to generate [stage.bwong.net](http://stage.bwong.net), and will soon be the new [bwong.net](http://bwong.net). It is fully [Ruby](http://www.ruby-lang.org/en/)-fied, more specifically:
 
 * [Sinatra](http://sinatra.rubyforge.org)
 * [Haml](http://haml.hamptoncatlin.com/) for templating through Sinatra
