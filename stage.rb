@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'sinatra/lib/sinatra.rb'
+require 'vendor/sinatra/lib/sinatra.rb'
 
 require 'fileutils'
 
