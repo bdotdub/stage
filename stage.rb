@@ -1,24 +1,24 @@
 require 'rubygems'
-require 'vendor/sinatra/lib/sinatra.rb'
+require 'sinatra/base'
 
 require 'fileutils'
 
 require 'stage/helpers'
 require 'stage/handlers'
 
-register_handlers
-register_helpers
+class Stage < Sinatra::Base
+  set :root, File.dirname(__FILE__)
 
-################################################
-# Main page stuff
-#
-get '/' do
-  haml :index
-end
-
-get '/about' do
-  @page = 'about'
-  @gpg_key =<<GPG
+	################################################
+	# Main page stuff
+	#
+	get '/' do
+	  haml :index
+	end
+	
+	get '/about' do
+	  @page = 'about'
+	  @gpg_key =<<GPG
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.8 (Darwin)
 
@@ -50,101 +50,102 @@ D6vHeruuTsL1PkpLCA==
 =TEsD
 -----END PGP PUBLIC KEY BLOCK-----
 GPG
-
-  haml :about
+	
+	  haml :about
+	end
+	
+	get '/stylesheets/bwong.css' do
+	  content_type 'text/css', :charset => 'utf-8'
+	  sass :bwong
+	end
+	
+	################################################
+	# Upload stuff
+	#
+	get '/upload' do
+	  @files, @directories = Dir.files_and_directories 'public/files/upload'
+	  haml :upload
+	end
+	
+	post '/upload' do
+	  # Get the uploaded file
+	  upload_directory = 'public/files/upload'
+	  upload = params['upload']
+	
+	  # Parse out the filename
+	  basefilename = upload[:filename]
+	  extension = File.extname upload[:filename]
+	  basefilename.gsub!(extension, '')
+	  
+	  # Build the filename
+	  src = upload[:tempfile].path
+	  filename = "#{upload_directory}/#{basefilename}#{extension}"
+	
+	  # Make the directory if it doesn't exist
+	  FileUtils.mkdir_p(File.dirname(src))
+	
+	  # Iterate through until we find a filename that doesn't already
+	  # exist
+	  iter = 1
+	  while File.exists? filename
+	    filename = "#{upload_directory}/#{basefilename}_#{iter}#{extension}"
+	    iter += 1
+	  end
+	  
+	  # Now move it!
+	  FileUtils.mv(src, filename)
+	  
+	  # Compose the notice string
+	  @notice = File.basename filename
+	  @notice << " uploaded!"
+	
+	  @files, @directories = Dir.files_and_directories 'public/files/upload'
+	
+	  haml :upload
+	end
+	
+	get '/upload/*' do
+	  upload_directory = 'public/files/upload'
+	  path = params['splat']
+	
+	  full_path = "#{upload_directory}/#{path}"
+	  @contents = @filename = nil
+	
+	  # Check if file exists
+	  if File.exists? full_path
+	    # If this is a directory, we must do a listing here
+	    if File.directory? full_path
+	
+	    # Else, we just display the file
+	    else
+	      @filename = File.basename full_path
+	      @contents = File.readlines(full_path).map {|l| l.rstrip}
+	    end
+	  else
+	    raise Sinatra::NotFound
+	  end
+	  
+	  haml :upload
+	end
+	
+	################################################
+	# Music stuff
+	#
+	get '/music/songs' do
+	end
+	
+	get '/music/songs/:song' do
+	end
+	
+	get '/music/albums' do
+	  directory = 'public/files/music/cds'
+	  @cds = Dir.directories(directory)
+	
+	  haml :albums
+	end
+	
+	get '/music/albums/:album' do
+	end
+	
 end
 
-get '/stylesheets/bwong.css' do
-  content_type 'text/css', :charset => 'utf-8'
-  sass :bwong
-end
-
-################################################
-# Upload stuff
-#
-get '/upload' do
-  @files, @directories = Dir.files_and_directories 'public/files/upload'
-  haml :upload
-end
-
-post '/upload' do
-  # Get the uploaded file
-  upload_directory = 'public/files/upload'
-  upload = params['upload']
-
-  # Parse out the filename
-  basefilename = upload[:filename]
-  extension = File.extname upload[:filename]
-  basefilename.gsub!(extension, '')
-  
-  # Build the filename
-  src = upload[:tempfile].path
-  filename = "#{upload_directory}/#{basefilename}#{extension}"
-
-  # Make the directory if it doesn't exist
-  FileUtils.mkdir_p(File.dirname src)
-
-  # Iterate through until we find a filename that doesn't already
-  # exist
-  iter = 1
-  while File.exists? filename
-    filename = "#{upload_directory}/#{basefilename}_#{iter}#{extension}"
-    iter += 1
-  end
-  
-  # Now move it!
-  FileUtils.mv(src, filename)
-  
-  # Compose the notice string
-  @notice = File.basename filename
-  @notice << " uploaded!"
-
-  @files, @directories = Dir.files_and_directories 'public/files/upload'
-
-  haml :upload
-end
-
-get '/upload/*' do
-  upload_directory = 'public/files/upload'
-  path = params['splat']
-
-  full_path = "#{upload_directory}/#{path}"
-  @contents = @filename = nil
-
-  # Check if file exists
-  if File.exists? full_path
-    # If this is a directory, we must do a listing here
-    if File.directory? full_path
-
-    # Else, we just display the file
-    else
-      @filename = File.basename full_path
-      @contents = File.readlines(full_path).map {|l| l.rstrip}
-    end
-  else
-    raise Sinatra::NotFound
-  end
-  
-  haml :upload
-end
-
-################################################
-# Music stuff
-#
-get '/music/songs' do
-end
-
-get '/music/songs/:song' do
-end
-
-get '/music/albums' do
-  directory = 'public/files/music/cds'
-  @cds = Dir.directories(directory)
-
-  haml :albums
-end
-
-get '/music/albums/:album' do
-end
-
-use_in_file_templates!
