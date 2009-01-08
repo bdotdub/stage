@@ -1,5 +1,14 @@
-require 'vendor/sinatra/lib/sinatra.rb'
+$:.unshift 'vendor/sinatra/lib'
+$:.unshift 'vendor/rack-cache/lib'
+
+require 'sinatra'
+require 'rack/cache'
+
 require 'rubygems'
+
+use Rack::Cache do
+  set :verbose, true
+end
  
 Sinatra::Application.default_options.merge!(
   :run => false,

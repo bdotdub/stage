@@ -6,4 +6,4 @@
 	url = git://github.com/bmizerany/sinatra.git
 [submodule "vendor/rack-cache"]
 	path = vendor/rack-cache
-	url = git://github.com/rtomayko/rack-cache.git
+	url = git://github.com/bdotdub/rack-cache.git
