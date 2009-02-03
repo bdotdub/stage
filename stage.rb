@@ -131,6 +131,7 @@ end
 ################################################
 # Music stuff
 #
+
 get '/music/songs' do
 end
 
@@ -145,6 +146,11 @@ get '/music/albums' do
 end
 
 get '/music/albums/:album' do
+end
+
+get '/music' do
+  uri = request.env["REQUEST_URI"]  
+  redirect "http://backstage.bwong.net#{uri}"
 end
 
 use_in_file_templates!
