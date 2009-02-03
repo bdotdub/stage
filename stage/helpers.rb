@@ -23,9 +23,4 @@ class Dir
   end
 end
 
-def register_helpers
 
-  helpers do
-  end
-
-end

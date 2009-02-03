@@ -1,6 +1,9 @@
 [submodule "public/apps/mushroom"]
 	path = public/apps/mushroom
 	url = git://github.com/bdotdub/mushroom.git
-[submodule "sinatra"]
-	path = sinatra
+[submodule "vendor/rack-cache"]
+	path = vendor/rack-cache
+	url = git://github.com/bdotdub/rack-cache.git
+[submodule "vendor/sinatra"]
+	path = vendor/sinatra
 	url = git://github.com/bmizerany/sinatra.git
