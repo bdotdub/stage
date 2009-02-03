@@ -7,8 +7,8 @@ require 'stage/helpers'
 require 'stage/handlers'
 
 class Stage < Sinatra::Base
-  set :root, File.dirname(__FILE__)
-
+  set :app_file, __FILE__
+  
 	################################################
 	# Main page stuff
 	#
@@ -17,6 +17,8 @@ class Stage < Sinatra::Base
 	end
 	
 	get '/about' do
+    last_modified File.mtime("#{options.views}/about.haml")
+
 	  @page = 'about'
 	  @gpg_key =<<GPG
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -53,8 +55,10 @@ GPG
 	
 	  haml :about
 	end
-	
+
 	get '/stylesheets/bwong.css' do
+    last_modified File.mtime("#{options.views}/bwong.sass")
+  
 	  content_type 'text/css', :charset => 'utf-8'
 	  sass :bwong
 	end
