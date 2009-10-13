@@ -8,14 +8,14 @@ require 'stage/handlers'
 
 class Stage < Sinatra::Base
   set :app_file, __FILE__
-  
+
   ################################################
   # Main page stuff
   #
   get '/' do
     haml :index
   end
-  
+
   get '/about' do
     last_modified File.mtime("#{options.views}/about.haml")
 
@@ -52,17 +52,17 @@ D6vHeruuTsL1PkpLCA==
 =TEsD
 -----END PGP PUBLIC KEY BLOCK-----
 GPG
-  
+
     haml :about
   end
 
   get '/stylesheets/bwong.css' do
     last_modified File.mtime("#{options.views}/bwong.sass")
-  
+
     content_type 'text/css', :charset => 'utf-8'
     sass :bwong
   end
-  
+
   ################################################
   # Upload stuff
   #
@@ -70,24 +70,24 @@ GPG
     @files, @directories = Dir.files_and_directories 'public/files/upload'
     haml :upload
   end
-  
+
   post '/upload' do
     # Get the uploaded file
     upload_directory = 'public/files/upload'
     upload = params['upload']
-  
+
     # Parse out the filename
     basefilename = upload[:filename]
     extension = File.extname upload[:filename]
     basefilename.gsub!(extension, '')
-    
+
     # Build the filename
     src = upload[:tempfile].path
     filename = "#{upload_directory}/#{basefilename}#{extension}"
-  
+
     # Make the directory if it doesn't exist
     FileUtils.mkdir_p(File.dirname(src))
-  
+
     # Iterate through until we find a filename that doesn't already
     # exist
     iter = 1
@@ -95,32 +95,32 @@ GPG
       filename = "#{upload_directory}/#{basefilename}_#{iter}#{extension}"
       iter += 1
     end
-    
+
     # Now move it!
     FileUtils.mv(src, filename)
     FileUtils.chmod 0755, filename
-    
+
     # Compose the notice string
     @notice = File.basename filename
     @notice << " uploaded!"
-  
+
     @files, @directories = Dir.files_and_directories 'public/files/upload'
-  
+
     haml :upload
   end
-  
+
   get '/upload/*' do
     upload_directory = 'public/files/upload'
     path = params['splat']
-  
+
     full_path = "#{upload_directory}/#{path}"
     @contents = @filename = nil
-  
+
     # Check if file exists
     if File.exists? full_path
       # If this is a directory, we must do a listing here
       if File.directory? full_path
-  
+
       # Else, we just display the file
       else
         @filename = File.basename full_path
@@ -129,31 +129,31 @@ GPG
     else
       raise Sinatra::NotFound
     end
-    
+
     haml :upload
   end
-  
+
   ################################################
   # Music stuff
   #
   get '/music/songs' do
   end
-  
+
   get '/music/songs/:song' do
   end
-  
+
   get '/music/albums' do
     directory = 'public/files/music/cds'
     @cds = Dir.directories(directory)
-  
+
     haml :albums
   end
-  
+
   get '/music/albums/:album' do
   end
-  
+
   get '/music' do
-    uri = request.env["REQUEST_URI"]  
+    uri = request.env["REQUEST_URI"]
     redirect "http://backstage.bwong.net#{uri}"
   end
 end
