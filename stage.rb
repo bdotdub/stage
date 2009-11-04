@@ -6,15 +6,20 @@ require 'fileutils'
 require 'stage/helpers'
 require 'stage/handlers'
 
+Dir.glob('subapps/*').each do |file|
+  require file
+end
+
 class Stage < Sinatra::Base
   set :app_file, __FILE__
 
-  ################################################
+
   # Main page stuff
   #
   get '/' do
     haml :index
   end
+
 
   get '/about' do
     last_modified File.mtime("#{options.views}/about.haml")
