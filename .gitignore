@@ -1,3 +1,5 @@
 logs/*
 public/files/*
 subapps/*
+sinatra/*
+vendor/sinatra/*
